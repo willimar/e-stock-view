@@ -29,6 +29,16 @@ namespace e.stock.view
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy(Program.AllowSpecificOrigins,
+                    builder => {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+
             services.AddControllers();
 
             #region Dependences
@@ -56,6 +66,7 @@ namespace e.stock.view
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseCors(Program.AllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
